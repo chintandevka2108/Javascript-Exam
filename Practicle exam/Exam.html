@@ -6,50 +6,52 @@
   <title>Recipe Book</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f9;
       padding: 20px;
       margin: auto;
-      max-width: 1000px;
+      max-width: 800px;
     }
     h1, h2 {
-      color: #343a40;
+      color: #2c3e50;
       text-align: center;
     }
     form, .search-filter {
       background: #ffffff;
       padding: 20px;
       margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
     label {
       display: block;
-      margin-bottom: 10px;
+      font-weight: 600;
+      margin-bottom: 8px;
     }
     input, button {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ced4da;
-      border-radius: 5px;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       font-size: 1rem;
     }
     button {
-      background-color: #007bff;
-      color: #ffffff;
+      background-color: #27ae60;
+      color: white;
       border: none;
       cursor: pointer;
+      font-weight: bold;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #219150;
     }
     .recipe {
-      background: #ffffff;
+      background: white;
       padding: 20px;
       margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
     .recipe img {
       width: 100%;
@@ -60,7 +62,8 @@
     .actions button {
       width: auto;
       margin-right: 10px;
-      padding: 5px 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -68,37 +71,31 @@
   <h1>Recipe Book</h1>
   <form id="recipeForm">
     <h2>Add Recipe</h2>
-    <label>Title: <input type="text" id="title" placeholder="Enter recipe title" required></label>
-    <label>Ingredients: <input type="text" id="ingredients" placeholder="Enter ingredients (comma separated)" required></label>
-    <label>Instructions: <input type="text" id="instructions" placeholder="Enter cooking instructions" required></label>
-    <label>Cuisine Type: <input type="text" id="cuisine" placeholder="Enter cuisine type" required></label>
-    <label>Image URL: <input type="url" id="imageUrl" placeholder="Enter image URL"></label>
+    <label>Title: <input type="text" id="title" required></label>
+    <label>Ingredients: <input type="text" id="ingredients" required></label>
+    <label>Instructions: <input type="text" id="instructions" required></label>
+    <label>Cuisine Type: <input type="text" id="cuisine" required></label>
+    <label>Image URL: <input type="url" id="imageUrl"></label>
     <button type="submit">Add Recipe</button>
   </form>
-
   <div class="search-filter">
     <h2>Search & Filter</h2>
-    <label>Search by Title: <input type="text" id="searchTitle" placeholder="Search by recipe title"></label>
-    <label>Filter by Cuisine: <input type="text" id="filterCuisine" placeholder="Filter by cuisine type"></label>
+    <label>Search by Title: <input type="text" id="searchTitle"></label>
+    <label>Filter by Cuisine: <input type="text" id="filterCuisine"></label>
     <button id="searchButton">Search</button>
   </div>
-
   <h2>Recipes</h2>
   <div id="recipeList"></div>
-
   <script>
     const recipeForm = document.getElementById('recipeForm');
     const recipeList = document.getElementById('recipeList');
     const searchTitle = document.getElementById('searchTitle');
     const filterCuisine = document.getElementById('filterCuisine');
     const searchButton = document.getElementById('searchButton');
-
     let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
-
     function saveRecipes() {
       localStorage.setItem('recipes', JSON.stringify(recipes));
     }
-
     function renderRecipes(filter = null) {
       recipeList.innerHTML = '';
       const filteredRecipes = filter ? filter(recipes) : recipes;
@@ -119,7 +116,6 @@
         recipeList.appendChild(recipeDiv);
       });
     }
-
     function addRecipe(event) {
       event.preventDefault();
       const title = document.getElementById('title').value;
@@ -127,13 +123,11 @@
       const instructions = document.getElementById('instructions').value;
       const cuisine = document.getElementById('cuisine').value;
       const imageUrl = document.getElementById('imageUrl').value;
-
       recipes.push({ title, ingredients, instructions, cuisine, imageUrl });
       saveRecipes();
-      renderRecipes();159204
+      renderRecipes();
       recipeForm.reset();
     }
-
     function editRecipe(index) {
       const recipe = recipes[index];
       document.getElementById('title').value = recipe.title;
@@ -143,13 +137,11 @@
       document.getElementById('imageUrl').value = recipe.imageUrl;
       deleteRecipe(index);
     }
-
     function deleteRecipe(index) {
       recipes.splice(index, 1);
       saveRecipes();
       renderRecipes();
     }
-
     function searchRecipes() {
       const titleQuery = searchTitle.value.toLowerCase();
       const cuisineQuery = filterCuisine.value.toLowerCase();
@@ -158,10 +150,8 @@
         recipe.cuisine.toLowerCase().includes(cuisineQuery)
       ));
     }
-
     recipeForm.addEventListener('submit', addRecipe);
     searchButton.addEventListener('click', searchRecipes);
-
     renderRecipes();
   </script>
 </body>
